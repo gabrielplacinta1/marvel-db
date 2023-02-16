@@ -14,7 +14,7 @@ class App extends Component {
                 <main>
                     <RandomChar />
                     <CharContent />
-                    <img class="bg-decoration" src="img/vision.png" alt="vision" />
+                    <img className="bg-decoration" src="img/vision.png" alt="vision" />
                 </main>
             </div>
         );

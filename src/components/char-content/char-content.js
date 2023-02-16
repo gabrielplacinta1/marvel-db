@@ -1,116 +1,122 @@
 import { Component } from "react";
 
+import MarvelService from "../../services/marvel-service";
+
 import './char-content.scss';
 
 class CharContent extends Component {
 
+    state = {
+        chars: [],
+        selectedCharId: null
+    }
+
+    marvelService = new MarvelService();
+
+    componentDidMount() {
+        this.createCharList();
+    }
+
+    onCharsLoaded = (chars) => {
+        this.setState({chars});
+    }
+    
+    createCharList = () => {
+        this.marvelService
+            .getAllCharacters()
+            .then(this.onCharsLoaded)
+    }
+
+    changeActiveChar = (id) => {
+        this.setState({
+            selectedCharId: id
+        })
+    }
+
     render() {
+        const {selectedCharId} = this.state;
+        const characterCards = this.state.chars.map(item => {
+            return (
+                <li className={`char__item${selectedCharId === item.id ? ' char__item_selected' : ''}`}
+                    onClick={() => this.changeActiveChar(item.id)}
+                    key={item.id}>
+                    <img src={item.thumbnail} alt={item.name}/>
+                    <div className="char__name">{item.name}</div>
+                </li> 
+            )
+        })
+
         return (
-            <div class="char__content">
-                <div class="char__list">
-                    <ul class="char__grid">
-                        <li class="char__item">
-                            <img src="img/abyss.jpg" alt="abyss"/>
-                            <div class="char__name">Abyss</div>
-                        </li>
-                        <li class="char__item char__item_selected">
-                            <img src="img/abyss.jpg" alt="abyss"/>
-                            <div class="char__name">Abyss</div>
-                        </li>
-                        <li class="char__item">
-                            <img src="img/abyss.jpg" alt="abyss"/>
-                            <div class="char__name">Abyss</div>
-                        </li>
-                        <li class="char__item">
-                            <img src="img/abyss.jpg" alt="abyss"/>
-                            <div class="char__name">Abyss</div>
-                        </li>
-                        <li class="char__item">
-                            <img src="img/abyss.jpg" alt="abyss"/>
-                            <div class="char__name">Abyss</div>
-                        </li>
-                        <li class="char__item">
-                            <img src="img/abyss.jpg" alt="abyss"/>
-                            <div class="char__name">Abyss</div>
-                        </li>
-                        <li class="char__item">
-                            <img src="img/abyss.jpg" alt="abyss"/>
-                            <div class="char__name">Abyss</div>
-                        </li>
-                        <li class="char__item">
-                            <img src="img/abyss.jpg" alt="abyss"/>
-                            <div class="char__name">Abyss</div>
-                        </li>
-                        <li class="char__item">
-                            <img src="img/abyss.jpg" alt="abyss"/>
-                            <div class="char__name">Abyss</div>
-                        </li>
+            <div className="char__content">
+                <div className="char__list">
+                    <ul className="char__grid">
+                        {characterCards}
                     </ul>
-                    <button class="button button__main button__long">
-                        <div class="inner">load more</div>
+                    <button className="button button__main button__long">
+                        <div className="inner">load more</div>
                     </button>
                 </div>
 
-                <div class="char__info">
-                    <div class="char__basics">
+                <div className="char__info">
+                    <div className="char__basics">
                         <img src="img/thor.jpeg" alt="abyss"/>
                         <div>
-                            <div class="char__info-name">thor</div>
-                            <div class="char__btns">
-                                <a href="#" class="button button__main">
-                                    <div class="inner">homepage</div>
+                            <div className="char__info-name">thor</div>
+                            <div className="char__btns">
+                                <a href="#" className="button button__main">
+                                    <div className="inner">homepage</div>
                                 </a>
-                                <a href="#" class="button button__secondary">
-                                    <div class="inner">Wiki</div>
+                                <a href="#" className="button button__secondary">
+                                    <div className="inner">Wiki</div>
                                 </a>
                             </div>
                         </div>
                     </div>
-                    <div class="char__descr">
+                    <div className="char__descr">
                         In Norse mythology, Loki is a god or jötunn (or both). Loki is the son of Fárbauti and Laufey, and the brother of Helblindi and Býleistr. By the jötunn Angrboða, Loki is the father of Hel, the wolf Fenrir, and the world serpent Jörmungandr. By Sigyn, Loki is the father of Nari and/or Narfi and with the stallion Svaðilfari as the father, Loki gave birth—in the form of a mare—to the eight-legged horse Sleipnir. In addition, Loki is referred to as the father of Váli in the Prose Edda.
                     </div>
-                    <div class="char__comics">Comics:</div>
-                    <ul class="char__comics-list">
-                        <li class="char__comics-item">
+                    <div className="char__comics">Comics:</div>
+                    <ul className="char__comics-list">
+                        <li className="char__comics-item">
                             All-Winners Squad: Band of Heroes (2011) #3
                         </li>
-                        <li class="char__comics-item">
+                        <li className="char__comics-item">
                             Alpha Flight (1983) #50
                         </li>
-                        <li class="char__comics-item">
+                        <li className="char__comics-item">
                             Amazing Spider-Man (1999) #503
                         </li>
-                        <li class="char__comics-item">
+                        <li className="char__comics-item">
                             Amazing Spider-Man (1999) #504
                         </li>
-                        <li class="char__comics-item">
+                        <li className="char__comics-item">
                             AMAZING SPIDER-MAN VOL. 7: BOOK OF EZEKIEL TPB (Trade Paperback)
                         </li>
-                        <li class="char__comics-item">
+                        <li className="char__comics-item">
                             Amazing-Spider-Man: Worldwide Vol. 8 (Trade Paperback)
                         </li>
-                        <li class="char__comics-item">
+                        <li className="char__comics-item">
                             Asgardians Of The Galaxy Vol. 2: War Of The Realms (Trade Paperback)
                         </li>
-                        <li class="char__comics-item">
+                        <li className="char__comics-item">
                             Vengeance (2011) #4
                         </li>
-                        <li class="char__comics-item">
+                        <li className="char__comics-item">
                             Avengers (1963) #1
                         </li>
-                        <li class="char__comics-item">
+                        <li className="char__comics-item">
                             Avengers (1996) #1
                         </li>
                     </ul>
-                    <p class="char__select">Please select a character to see information</p>
-                    <div class="skeleton">
-                        <div class="pulse skeleton__header">
-                            <div class="pulse skeleton__circle"></div>
-                            <div class="pulse skeleton__mini"></div>
+                    <p className="char__select">Please select a character to see information</p>
+                    <div className="skeleton">
+                        <div className="pulse skeleton__header">
+                            <div className="pulse skeleton__circle"></div>
+                            <div className="pulse skeleton__mini"></div>
                         </div>
-                        <div class="pulse skeleton__block"></div>
-                        <div class="pulse skeleton__block"></div>
-                        <div class="pulse skeleton__block"></div>
+                        <div className="pulse skeleton__block"></div>
+                        <div className="pulse skeleton__block"></div>
+                        <div className="pulse skeleton__block"></div>
                     </div>
                 </div>
             </div>
