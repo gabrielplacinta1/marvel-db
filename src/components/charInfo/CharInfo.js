@@ -1,12 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-
-import ErrorMessage from '../errorMessage/ErrorMessage';
-import Skeleton from '../skeleton/Skeleton';
 
 import './charInfo.scss';
 
 import useMarvelService from '../../services/MarvelService';
+import setContent from '../../utils/setContent';
 
 const CharInfo = (props) => {
 
@@ -14,7 +11,7 @@ const CharInfo = (props) => {
 
     const prevCharIdRef = useRef();
 
-    const {loading, error, getCharacter, clearError} = useMarvelService();
+    const {getCharacter, clearError, process, setProcess} = useMarvelService();
 
     useEffect(() => {
         updateChar();
@@ -34,35 +31,24 @@ const CharInfo = (props) => {
         }
 
         clearError();
-        getCharacter(charId).then(onCharLoaded);
+        getCharacter(charId)
+            .then(onCharLoaded)
+            .then(() => setProcess('confirmed'))
     }
 
     const onCharLoaded = (char) => {
         setChar(char);
     }
 
-    const skeleton = char || loading || error ? null : <Skeleton/>;
-    const errorMessage = error ? <ErrorMessage/> : null;
-    const content = !(loading || error || !char) ? <View char={char}/> : null;
-
     return (
         <div className="char__info">
-            {skeleton}
-            {errorMessage}
-            <CSSTransition
-                in={!!content}
-                timeout={300}
-                classNames='fade'>
-                <TransitionGroup>
-                    {content}
-                </TransitionGroup>
-            </CSSTransition>
+            {setContent(process, View, char)}
         </div>
     )
 }
 
-const View = ({char}) => {
-    const {name, description, thumbnail, homepage, wiki, comics} = char;
+const View = ({data}) => {
+    const {name, description, thumbnail, homepage, wiki, comics} = data;
 
     return (
         <>

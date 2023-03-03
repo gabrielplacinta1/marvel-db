@@ -37,9 +37,6 @@ const SearchForm = () => {
                         The character was not found. Check the name and try again
                     </div>;
 
-
-    
-
     return (
         <div className="searchform">
             <Formik
