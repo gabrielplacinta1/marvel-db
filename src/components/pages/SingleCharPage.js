@@ -1,4 +1,5 @@
 import { useParams, Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 import { useState, useEffect } from 'react';
 
@@ -46,6 +47,13 @@ const View = ({char}) => {
 
     return (
         <>
+            <Helmet>
+                <meta
+                    name="description"
+                    content="Marvel information portal"
+                    />
+                <title>{`${name} page`}</title>
+            </Helmet>
             <AppBanner />
             <div className="single-comic">
                 <img src={thumbnail.path + '.' + thumbnail.extension} alt={name} className="single-comic__img" style={{height: '293px'}}/>
